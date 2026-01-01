@@ -13,7 +13,7 @@ let AddVariantController=async (req,res)=>{
         let variant=new VariantSchema({
             variantname,
             description,
-            image:`/uploads/${req.file.filename}`,
+            image:`${process.env.PROD_API}/uploads/${req.file.filename}`,
             saleprice,
             regularprice,
             slug 

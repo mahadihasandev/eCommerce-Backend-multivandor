@@ -10,7 +10,7 @@ let AddProductController=async (req,res)=>{
         let product=new ProductSchema({
             name,
             description,
-            image:`/uploads/${req.file.filename}`,
+            image:`${process.env.PROD_API}/uploads/${req.file.filename}`,
             saleprice,
             regularprice,
             slug 
