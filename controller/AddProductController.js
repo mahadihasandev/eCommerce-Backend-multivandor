@@ -1,4 +1,5 @@
 const ProductSchema = require("../model/ProductSchema")
+require('dotenv').config();
 
 let AddProductController=async (req,res)=>{
     let {name,description,image,saleprice,regularprice,slug}=req.body

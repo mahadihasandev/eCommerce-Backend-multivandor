@@ -1,5 +1,6 @@
 const ProductSchema = require("../model/ProductSchema")
 const VariantSchema = require("../model/VariantSchema")
+require('dotenv').config();
 
 let AddVariantController=async (req,res)=>{
      
