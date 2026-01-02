@@ -4,6 +4,21 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
 
+
+const AddCategoryController = require('../../controller/AddCategoryController');
+const addSubCategoryController = require('../../controller/AddsubCategoryController');
+const ViewCategoryController = require('../../controller/ViewCategoryController');
+const ViewSubCategoryController = require('../../controller/ViewSubCategoryController');
+const AddProductController = require('../../controller/AddProductController');
+const AddVariantController = require('../../controller/AddVariantController');
+const ViewProductController = require('../../controller/ViewProductController');
+const ViewVariantController = require('../../controller/ViewVariantController');
+const AddBannerController = require('../../controller/AddBannerController');
+const ViewBannerController = require('../../controller/ViewBannerController');
+const DeleteProductController = require('../../controller/DeleteProductController');
+const EditProductController = require('../../controller/EditProductController');
+const DeleteBannerController=require('../../controller/DeleteBannerController')
+
 // Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -21,19 +36,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 // Controllers
-const AddCategoryController = require('../../controller/AddCategoryController');
-const addSubCategoryController = require('../../controller/AddsubCategoryController');
-const ViewCategoryController = require('../../controller/ViewCategoryController');
-const ViewSubCategoryController = require('../../controller/ViewSubCategoryController');
-const AddProductController = require('../../controller/AddProductController');
-const AddVariantController = require('../../controller/AddVariantController');
-const ViewProductController = require('../../controller/ViewProductController');
-const ViewVariantController = require('../../controller/ViewVariantController');
-const AddBannerController = require('../../controller/AddBannerController');
-const ViewBannerController = require('../../controller/ViewBannerController');
-const DeleteProductController = require('../../controller/DeleteProductController');
-const EditProductController = require('../../controller/EditProductController');
-const DeleteBannerController = require('../../controller/DeleteBannerController');
+
 
 // Routes
 _.post('/addcategory', AddCategoryController);
@@ -44,13 +47,13 @@ _.get('/viewsubcategory', ViewSubCategoryController);
 // Product Routes - Notice the '/' before ':' in delete/edit
 _.post('/addproduct', upload.single('productImg'), AddProductController);
 _.get('/viewproduct', ViewProductController);
-_.delete('/deleteproduct/:item', DeleteProductController); 
+_.delete('/deleteproduct:item', DeleteProductController); 
 _.post('/editproduct/:getId', EditProductController);
 
 // Banner Routes
 _.post('/addbanner', upload.single('productImg'), AddBannerController);
 _.get('/viewbanner', ViewBannerController);
-_.delete('/deletebanner/:item', DeleteBannerController);
+_.delete('/deletebanner:item',DeleteBannerController);
 
 // Variant Routes
 _.post('/addvariant', upload.single('productImg'), AddVariantController);
