@@ -1,48 +1,59 @@
-const express = require('express')
-const _= express.Router()
-const multer = require('multer')
+const express = require('express');
+const _ = express.Router();
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 
-const AddCategoryController=require('../../controller/AddCategoryController')
-const addSubCategoryController=require('../../controller/AddsubCategoryController')
-const ViewCategoryController = require('../../controller/ViewCategoryController')
-const ViewSubCategoryController = require('../../controller/ViewSubCategoryController')
-const AddProductController = require('../../controller/AddProductController')
-const AddVariantController = require('../../controller/AddVariantController')
-const ViewProductController = require('../../controller/ViewProductController')
-const ViewVariantController = require('../../controller/ViewVariantController')
-const AddBannerController = require('../../controller/AddBannerController')
-const ViewBannerController = require('../../controller/ViewBannerController')
-const DeleteProductController = require('../../controller/DeleteProductController')
-const EditProductController = require('../../controller/EditProductController')
-const DeleteBannerController = require('../../controller/DeleteBannerController')
+// Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'ecommerce_uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null,uniqueSuffix+ '-' + file.originalname )
-    console.log(file);
-    
-  }
-})
-const upload = multer({ storage: storage })
+});
+const upload = multer({ storage: storage });
 
-_.post('/addcategory',AddCategoryController)
-_.get('/viewcategory',ViewCategoryController)
-_.post('/addsubcategory',addSubCategoryController)
-_.get('/viewsubcategory',ViewSubCategoryController)
-_.post('/addproduct',upload.single('productImg'),AddProductController)
-_.get('/viewproduct',ViewProductController)
-_.delete('/deleteproduct:item',DeleteProductController)
-_.delete('/deletebanner:item',DeleteBannerController)
-_.post('/editproduct:getId',EditProductController)
-_.post('/addbanner',upload.single('productImg'),AddBannerController)
-_.get('/viewbanner',ViewBannerController)
-_.post('/addvariant',upload.single('productImg'),AddVariantController)
-_.get('/viewvariant',ViewVariantController)
+// Controllers
+const AddCategoryController = require('../../controller/AddCategoryController');
+const addSubCategoryController = require('../../controller/AddsubCategoryController');
+const ViewCategoryController = require('../../controller/ViewCategoryController');
+const ViewSubCategoryController = require('../../controller/ViewSubCategoryController');
+const AddProductController = require('../../controller/AddProductController');
+const AddVariantController = require('../../controller/AddVariantController');
+const ViewProductController = require('../../controller/ViewProductController');
+const ViewVariantController = require('../../controller/ViewVariantController');
+const AddBannerController = require('../../controller/AddBannerController');
+const ViewBannerController = require('../../controller/ViewBannerController');
+const DeleteProductController = require('../../controller/DeleteProductController');
+const EditProductController = require('../../controller/EditProductController');
+const DeleteBannerController = require('../../controller/DeleteBannerController');
 
-module.exports=_
+// Routes
+_.post('/addcategory', AddCategoryController);
+_.get('/viewcategory', ViewCategoryController);
+_.post('/addsubcategory', addSubCategoryController);
+_.get('/viewsubcategory', ViewSubCategoryController);
+
+// Product Routes - Notice the '/' before ':' in delete/edit
+_.post('/addproduct', upload.single('productImg'), AddProductController);
+_.get('/viewproduct', ViewProductController);
+_.delete('/deleteproduct/:item', DeleteProductController); 
+_.post('/editproduct/:getId', EditProductController);
+
+// Banner Routes
+_.post('/addbanner', upload.single('productImg'), AddBannerController);
+_.get('/viewbanner', ViewBannerController);
+_.delete('/deletebanner/:item', DeleteBannerController);
+
+// Variant Routes
+_.post('/addvariant', upload.single('productImg'), AddVariantController);
+_.get('/viewvariant', ViewVariantController);
+
+module.exports = _;

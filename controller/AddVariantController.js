@@ -5,7 +5,7 @@ require('dotenv').config();
 let AddVariantController=async (req,res)=>{
      
     let {variantname,description,image,saleprice,regularprice,slug}=req.body
-    
+    const imageUrl = req.file.path;
     let existingProduct=await ProductSchema.find({name:variantname})
 
     if(existingProduct.length<0){
@@ -14,7 +14,7 @@ let AddVariantController=async (req,res)=>{
         let variant=new VariantSchema({
             variantname,
             description,
-            image:`${process.env.PROD_API}/uploads/${req.file.filename}`,
+            image:imageUrl,
             saleprice,
             regularprice,
             slug 

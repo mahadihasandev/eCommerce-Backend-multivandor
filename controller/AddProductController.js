@@ -3,6 +3,8 @@ require('dotenv').config();
 
 let AddProductController=async (req,res)=>{
     let {name,description,image,saleprice,regularprice,slug}=req.body
+    const imageUrl = req.file.path;
+
     let existingProduct=await ProductSchema.find({name:name})
 
     if(existingProduct.length>0){
@@ -11,7 +13,7 @@ let AddProductController=async (req,res)=>{
         let product=new ProductSchema({
             name,
             description,
-            image:`${process.env.PROD_API}/uploads/${req.file.filename}`,
+            image:imageUrl,
             saleprice,
             regularprice,
             slug 
