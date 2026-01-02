@@ -1,5 +1,7 @@
 const nodemailer = require("nodemailer");
 var jwt = require('jsonwebtoken');
+
+
 let emailVerification=async(email,otp)=>{
 
 var emailDecoded = jwt.verify(email, 'arnob');

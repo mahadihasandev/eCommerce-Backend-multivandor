@@ -33,8 +33,8 @@ let Registration=async(req,res)=>{
         if(existsUser.length>0){
             res.send({error:`${existsUser[0].email} already exist choose a different email.`})
         }else{
-            bcrypt.genSalt(10, function(err, salt){
-                bcrypt.hash(password, salt, function(err, hash) {
+            bcrypt.genSalt(10,function(err, salt){
+                bcrypt.hash(password, salt,async function(err, hash) {
             
             let userData=new UserSchema({
                 username:username,
@@ -44,7 +44,7 @@ let Registration=async(req,res)=>{
        })
         userData.save()
        
-       emailVerification(emailEncode,otpEncode) 
+        await emailVerification(emailEncode,otpEncode) 
        res.send({username:userData.username,email:userData.email,otp:userData.otp})      
     });
 });
