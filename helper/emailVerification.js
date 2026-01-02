@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 var jwt = require('jsonwebtoken');
-require('dotenv').config();
 let emailVerification=async(email,otp)=>{
 
 var emailDecoded = jwt.verify(email, 'arnob');
@@ -31,7 +30,7 @@ const transporter = nodemailer.createTransport({
             sans-serif;"> Please confirm This email is your, then Click in the verification button
             to create your new account. </p>
            
-            <a href="${process.env.PROD_API}/otp/${email}/${otp}" style="border: thin; margin-top: 30px; background: rgb(17, 144, 255); 
+            <a href="https://e-commerce-dashboard-multivandor-zm.vercel.app/otp/${email}/${otp}" style="border: thin; margin-top: 30px; background: rgb(17, 144, 255); 
             color: rgb(255, 255, 255); padding: 10px 25px; border-radius: 10px; 
             font-size: 30px; font-weight: 700; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
             Verify</a>
