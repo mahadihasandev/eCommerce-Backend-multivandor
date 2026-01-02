@@ -8,4 +8,5 @@ const DeleteBannerController=async(req,res)=>{
     res.send({success:"Banner Deleted"})    
 }
 
+
 module.exports=DeleteBannerController
