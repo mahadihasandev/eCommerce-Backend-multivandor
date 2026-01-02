@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
   const info = await transporter.sendMail({
-    from: '"Maddison Foo Koch" <arnob4all@gmail.com>',
+    from: '"Mahadi" <arnob4all@gmail.com>',
     to: emailDecoded,
     subject: "Email Verification",
     text: "Email Verification Send", 
