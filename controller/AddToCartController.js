@@ -12,9 +12,10 @@ let AddToCartController=async (req,res)=>{
             {quantity:existCart[0].quantity+quantity},{new:true}
         )
         }else if(req.query.type=='decrement'){
-        await AddToCartSchema.findOneAndUpdate({_id:existCart[0]._id},
-            {quantity:existCart[0].quantity-quantity},{new:true}
-        )
+            if(existCart[0].quantity>1){
+            await AddToCartSchema.findOneAndUpdate({_id:existCart[0]._id},
+            {quantity:existCart[0].quantity-quantity},{new:true})
+            }
         }
 
         }else{
