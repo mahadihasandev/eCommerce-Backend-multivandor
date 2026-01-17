@@ -1,3 +1,4 @@
+const CategorySchema = require("../model/CategorySchema");
 const subCategorySchema = require("../model/SubCategorySchema");
 
 
@@ -17,6 +18,7 @@ const AddsubCategoryController=async (req,res)=>{
             })
             subCategoryData.save()
             res.send({success:"SubCategory has been Created"})
+            await CategorySchema.findOneAndUpdate({_id:categoryId},{$push:{subcategoryList:subCategoryData._id}})
         }
 }
 

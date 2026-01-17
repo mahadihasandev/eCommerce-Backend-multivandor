@@ -17,7 +17,10 @@ const AddBannerController = require('../../controller/AddBannerController');
 const ViewBannerController = require('../../controller/ViewBannerController');
 const DeleteProductController = require('../../controller/DeleteProductController');
 const EditProductController = require('../../controller/EditProductController');
-const DeleteBannerController=require('../../controller/DeleteBannerController')
+const DeleteBannerController=require('../../controller/DeleteBannerController');
+const ViewAllSubCatController = require('../../controller/ViewAllSubCatController');
+const AddToCartController = require('../../controller/AddToCartController');
+const ViewAddToCartController = require('../../controller/ViewAddToCartController');
 
 // Configuration
 cloudinary.config({
@@ -47,16 +50,19 @@ _.get('/viewsubcategory', ViewSubCategoryController);
 // Product Routes - Notice the '/' before ':' in delete/edit
 _.post('/addproduct', upload.single('productImg'), AddProductController);
 _.get('/viewproduct', ViewProductController);
-_.delete('/deleteproduct:item', DeleteProductController); 
+_.delete('/deleteproduct/:item', DeleteProductController); 
 _.post('/editproduct/:getId', EditProductController);
 
 // Banner Routes
 _.post('/addbanner', upload.single('productImg'), AddBannerController);
 _.get('/viewbanner', ViewBannerController);
-_.delete('/deletebanner:item',DeleteBannerController);
+_.delete('/deletebanner/:item',DeleteBannerController);
 
 // Variant Routes
 _.post('/addvariant', upload.single('productImg'), AddVariantController);
 _.get('/viewvariant', ViewVariantController);
+_.get('/viewallsubcategory',ViewAllSubCatController)
+_.post('/addtocart',AddToCartController)
+_.get('/viewaddtocart',ViewAddToCartController)
 
 module.exports = _;
