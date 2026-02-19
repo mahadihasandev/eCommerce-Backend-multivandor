@@ -13,6 +13,9 @@ const BannerSchema=new Schema({
         type:String,
         
     },
+    productSlug:{
+        type:String,
+    }
   
 })
 

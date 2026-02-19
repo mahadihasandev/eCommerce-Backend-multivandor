@@ -1,7 +1,7 @@
 const AddToCartSchema = require("../model/AddToCartSchema")
 
 let AddToCartController=async (req,res)=>{
-    let {cartId,ownerId,quantity}=req.body
+    let {cartId,ownerId,quantity,stock}=req.body
 
 
        let existCart=await AddToCartSchema.find({cartId:cartId})

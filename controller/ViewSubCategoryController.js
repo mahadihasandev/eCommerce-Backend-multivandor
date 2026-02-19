@@ -1,7 +1,7 @@
 let SubCategorySchema=require('../model/SubCategorySchema')
 
 let ViewSubCategoryController=async (req,res)=>{
-    let SubCategory=await SubCategorySchema.find({}).populate('categoryId')
+    let SubCategory=await SubCategorySchema.find({}).populate('productList').populate('categoryId')
     res.send(SubCategory);
     
     

@@ -1,8 +1,7 @@
 let CategorySchema = require("../model/CategorySchema");
 
-
 let AddCategoryController=async(req,res)=>{
-    let {name,ownerId}=req.body
+    let {name,ownerId,slug}=req.body
    
 let existCategory=await CategorySchema.findOne({name:name})
 if(existCategory){
@@ -11,6 +10,7 @@ if(existCategory){
     let categoryData=new CategorySchema({
     name:name,
     ownerId:ownerId,
+    slug:slug,
 })
 
 categoryData.save()

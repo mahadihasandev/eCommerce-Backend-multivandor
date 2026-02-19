@@ -1,0 +1,10 @@
+Starting verification...
+2026-02-17T03:02:28.659Z - Connected to MongoDB.
+2026-02-17T03:02:28.709Z - Current Indexes: [{"v":2,"key":{"_id":1},"name":"_id_"}]
+2026-02-17T03:02:28.709Z - No 'name_1' index found.
+2026-02-17T03:02:28.710Z - Creating first subcat: AutoTest_1771297348710 under 6993da4485e0ca9a7adc982e
+2026-02-17T03:02:28.775Z - First subcat created.
+2026-02-17T03:02:28.775Z - Creating second subcat: AutoTest_1771297348710 under 6993da4485e0ca9a7adc982f
+2026-02-17T03:02:28.821Z - Second subcat created.
+2026-02-17T03:02:28.872Z - Cleaned up test data.
+2026-02-17T03:02:28.878Z - Done.

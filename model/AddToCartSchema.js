@@ -15,6 +15,7 @@ const AddToCartSchema=new Schema({
         type:Number,
         
     },
+    
   
 })
 

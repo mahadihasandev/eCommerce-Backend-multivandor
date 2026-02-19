@@ -8,6 +8,11 @@ const CategorySchema=new Schema({
         required:true,
         unique:true,
     },
+    slug:{
+        type:String,
+        required:true,
+        
+    },
     ownerId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'userInfo',
@@ -15,8 +20,11 @@ const CategorySchema=new Schema({
      subcategoryList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Subcategory',
-    }
-],
+    }],
+    productList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Product',
+    }],
     
 })
 

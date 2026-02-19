@@ -3,7 +3,7 @@ require('dotenv').config();
 
 
 let AddBannerController=async (req,res)=>{
-    let {name,description,image}=req.body
+    let {name,description,image,productSlug}=req.body
     const imageUrl = req.file.path;
 
 
@@ -11,6 +11,7 @@ let AddBannerController=async (req,res)=>{
             name,
             description,
             image:imageUrl,
+            productSlug,
            
         })
 
