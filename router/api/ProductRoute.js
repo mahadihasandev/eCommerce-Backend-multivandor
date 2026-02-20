@@ -22,6 +22,7 @@ const AddToCartController = require("../../controller/AddToCartController");
 const ViewAddToCartController = require("../../controller/ViewAddToCartController");
 const AddDiscountController = require("../../controller/AddDiscountController");
 const TopDiscountController = require("../../controller/TopDiscountController");
+const ViewSingleProductController = require("../../controller/ViewSingleProductController");
 
 // Configuration
 cloudinary.config({
@@ -66,5 +67,6 @@ _.post("/addtocart", AddToCartController);
 _.get("/viewaddtocart", ViewAddToCartController);
 _.post("/adddiscount", AddDiscountController);
 _.get("/topdiscount",TopDiscountController);
+_.get("/viewsingleproduct/:id", ViewSingleProductController);
 
 module.exports = _;
