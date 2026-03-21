@@ -16,6 +16,7 @@ let AddProductController = async (req, res) => {
     quickoverview,
     categoryId,
     subCategoryId,
+    vendorId,
   } = req.body;
   const imageUrls = req.files.map((file) => file.path);
 
@@ -38,6 +39,7 @@ let AddProductController = async (req, res) => {
       quickoverview,
       categoryId,
       subCategoryId,
+      vendorId,
     });
 
     product.save();

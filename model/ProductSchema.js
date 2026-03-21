@@ -46,6 +46,17 @@ const ProductSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "SubCategory",
   },
+  vendorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userInfo",
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+ProductSchema.index({ vendorId: 1, createdAt: -1 });
+ProductSchema.index({ categoryId: 1, subCategoryId: 1 });
 
 module.exports = mongoose.model("Product", ProductSchema);

@@ -26,6 +26,10 @@ const UserSchema=new Schema({
         type:String,
         enum:['user','merchant','admin'],
         default:'user'
+    },
+    profileImage:{
+        type:String,
+        default:''
     }
 })
 

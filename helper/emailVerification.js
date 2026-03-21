@@ -1,52 +1,65 @@
 const nodemailer = require("nodemailer");
-var jwt = require('jsonwebtoken');
 
+function createTransporter() {
+  const smtpHost = process.env.SMTP_HOST || process.env.MAIL_HOST;
+  const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const smtpSecure = process.env.SMTP_SECURE === "true";
+  const smtpUser = (process.env.SMTP_USER || process.env.EMAIL_USER || process.env.MAIL_USER || "").trim();
+  const smtpPass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || process.env.MAIL_PASS || "").trim();
 
-let emailVerification=async(email,otp)=>{
+  if (!smtpUser || !smtpPass) {
+    throw new Error("Missing SMTP credentials. Set SMTP_USER/SMTP_PASS (or EMAIL_USER/EMAIL_PASS).");
+  }
 
-var emailDecoded = jwt.verify(email, 'arnob');
+  if (smtpHost) {
+    return nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    });
+  }
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "arnob4all@gmail.com",
-    pass: "yabsholxybizgase",
-  },
-});
-  const info = await transporter.sendMail({
-    from: '"Mahadi" <arnob4all@gmail.com>',
-    to: emailDecoded,
-    subject: "Email Verification",
-    text: "Email Verification Send", 
-    html: ` <div style=" border-radius: 10px;
-        margin: auto;
-        background: rgb(243, 243, 255);
-        width: 30%;
-        text-align: center;
-        padding: 50px 50px">
-        <div >
-            <h1 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Verify your email.</h1>
-            <hr/>
-            <p style="padding-top: 20px;">${emailDecoded}</p>
-            <p style="font-size: 17px; padding-top: 50px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', 
-            sans-serif;"> Please confirm This email is your, then Click in the verification button
-            to create your new account. </p>
-           
-            <a href="https://e-commerce-dashboard-multivandor-zm.vercel.app/otp/${email}/${otp}" style="border: thin; margin-top: 30px; background: rgb(17, 144, 255); 
-            color: rgb(255, 255, 255); padding: 10px 25px; border-radius: 10px; 
-            font-size: 30px; font-weight: 700; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-            Verify</a>
-
-            <div style="text-align:center; margin-top: 20px;">
-                <img style="width: 30px;" src="https://i.ibb.co.com/ycGQxcxC/Facebook-logo-square.png" alt="Facebook-logo-square">
-               <img style="width: 30px;"  src="https://i.ibb.co.com/yMNG5jh/png-clipart-social-media-computer-icons-tulane-university-facebook-drawing-twitter-twitter-logo-blue.png" alt="png-clipart-social-media-computer-icons-tulane-university-facebook-drawing-twitter-twitter-logo-blue">
-             <img style="width: 30px;" src="https://i.ibb.co.com/rG1w3by3/Linked-In-icon-svg.png" alt="Linked-In-icon-svg" >
-              <img style="width: 30px;" src="https://i.ibb.co.com/JP5xNDt/Instagram-icon.png" alt="Instagram-icon" >
-            <div style="padding-top: 50px ; margin-bottom: 50px;">copy right 2011</div>
-        </div>
-    </div>
-    </div>`,
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
   });
 }
 
-module.exports=emailVerification
+async function emailVerification(email, otp) {
+  const transporter = createTransporter();
+  const fromAddress = process.env.EMAIL_FROM || process.env.SMTP_USER || process.env.EMAIL_USER;
+  const apiBaseUrl = process.env.PROD_API || process.env.API_HOST || "http://localhost:8000";
+  const verifyUrl = `${apiBaseUrl}/api/v1/auth/verify-email?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`;
+
+  await transporter.sendMail({
+    from: fromAddress,
+    to: email,
+    subject: "Verify your account",
+    text: `Your verification code is ${otp}. This code expires in 10 minutes.`,
+    html: `
+      <div style="max-width:520px;margin:24px auto;padding:24px;border:1px solid #e5e7eb;border-radius:12px;font-family:Arial,sans-serif;background:#f8fafc;">
+        <h2 style="margin:0 0 12px;color:#0f172a;">Email Verification</h2>
+        <p style="margin:0 0 16px;color:#334155;">Use this OTP code to verify your account:</p>
+        <div style="font-size:28px;font-weight:700;letter-spacing:4px;color:#0369a1;background:#e0f2fe;padding:12px 16px;border-radius:10px;display:inline-block;">
+          ${otp}
+        </div>
+        <div style="margin-top:20px;">
+          <a href="${verifyUrl}" style="display:inline-block;padding:12px 20px;background:#0284c7;color:white;text-decoration:none;border-radius:8px;font-weight:700;">
+            Verify Email
+          </a>
+        </div>
+        <p style="margin:12px 0 0;color:#475569;font-size:12px;word-break:break-all;">If button does not work, open this link:<br/>${verifyUrl}</p>
+        <p style="margin:16px 0 0;color:#64748b;">This code expires in 10 minutes.</p>
+      </div>
+    `,
+  });
+}
+
+module.exports = emailVerification;

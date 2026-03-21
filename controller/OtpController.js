@@ -1,21 +1,14 @@
-const UserSchema = require("../model/UserSchema")
-var jwt = require('jsonwebtoken');
+const verifyOtpForEmail = require("../helper/verifyOtpForEmail")
 
 let otp=async (req,res)=>{
-
    let {otp,email}=req.body
+   const result = await verifyOtpForEmail(email, otp)
 
-   let existUser=await UserSchema.findOne({email:email}) 
-   if(existUser){
-        if(!existUser.emailVerified&&existUser.otp==otp){          
-            await UserSchema.findOneAndUpdate({email:email},{otp:"",emailVerified:true})
-             res.send({success:"otp match"}) 
-        }else{
-            res.send({error:"Please enter a valid otp"})                       
-        }        
-   }else{
-        res.send({error:"user does not exist"})
-   }  
+   if(!result.ok){
+      return res.status(result.status).send({error: result.message})
+   }
+
+   return res.send({success: result.message})
 }
 
 module.exports=otp
